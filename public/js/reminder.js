@@ -23,7 +23,7 @@ const saveReminderToDatabase = async (title, description, dateTimeString) => {
   };
 
   try {
-    const response = await fetch("https://imaginative-isobel-testalarmapp-b9675341.koyeb.app/api/reminders", {
+    const response = await fetch("http://localhost:4040/api/reminders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,47 +43,18 @@ const saveReminderToDatabase = async (title, description, dateTimeString) => {
   }
 };
 
-// Function to schedule notifications for future reminders
-const scheduleNotifications = (alarms) => {
-  const currentTime = new Date();
-  alarms.forEach((alarm) => {
-    const alarmTime = new Date(alarm.dateTime);
-    const timeDifference = alarmTime - currentTime;
-
-    if (timeDifference > 0) { // Only schedule if the reminder is in the future
-      let timeoutId = setTimeout(() => {
-        // Display the notification
-        new Notification(alarm.title, {
-          body: alarm.description,
-          requireInteraction: true,
-        });
-
-        // Automatically delete reminder 1 minute after notification
-        const row = document.querySelector(`[data-reminder-id="${alarm._id}"]`);
-        if (row) {
-          setTimeout(() => deleteReminder(alarm._id, row), 60000); // 1-minute delay
-        }
-      }, timeDifference);
-
-      timeoutMap[alarm._id] = timeoutId; // Map timeout ID to reminder ID for later reference
-    }
-  });
-};
-
 // Function to load all reminders from the database and display them in the table
 const loadRemindersFromDatabase = async () => {
   try {
-    const response = await fetch("https://imaginative-isobel-testalarmapp-b9675341.koyeb.app/api/reminders");
+    const response = await fetch("http://localhost:4040/api/reminders");
     if (response.ok) {
       const alarms = await response.json();
-      const tableBody = document.getElementById("reminderTableBody");
 
       alarms.forEach((alarm) => {
         const { title, description, dateTime, _id } = alarm;
         addReminder(title, description, dateTime, _id);
       });
 
-      scheduleNotifications(alarms); // Schedule any future reminders
     } else {
       console.error("Failed to load alarms:", response.statusText);
     }
@@ -145,7 +116,7 @@ const clearFormFields = () => {
 // Function to delete reminders from the database and the frontend
 const deleteReminder = async (reminderId, row) => {
   try {
-    const response = await fetch(`https://imaginative-isobel-testalarmapp-b9675341.koyeb.app/api/reminders/${reminderId}`, {
+    const response = await fetch(`http://localhost:4040/api/reminders/${reminderId}`, {
       method: 'DELETE',
     });
     if (response.ok) {
