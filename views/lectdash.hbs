@@ -1,0 +1,80 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alarm</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <div id="mySidenav" class="sidenav">
+      <a
+        href="javascript:void(0)"
+        class="closebtn"
+        onclick="closeNav()"
+      >&times;</a>
+      <a href="#">About</a>
+      <a href="/time-table">Time Table</a>
+    </div>
+
+    <!-- Use any element to open the sidenav -->
+    <div class="bugger" onclick="openNav()">
+      <div class="slice"></div>
+      <div class="slice"></div>
+      <div class="slice"></div>
+    </div>
+
+    <div class="main">
+      <div class="menu">
+        <div class="details">
+          <h1>dashboard</h1>
+          <div class="">
+            <span>{{name}}</span>
+            <span>{{email}}</span>
+            {{!-- <span>{{}}</span> --}}
+          </div>
+        </div>
+        <div class="user-menu"></div>
+      </div>
+      <div class="container">
+        <h2 style="text-align: center">Reminder App</h2>
+
+        <!-- <form action="" method=""> -->
+        <label for="">title :</label>
+        <input type="text" name="title" id="title" />
+        <label for="">venue :</label>
+        <input type="text" name="description" id="description" />
+        <label for="">Date :</label>
+        <input type="date" name="date" id="date" />
+        <label for="">Time :</label>
+        <input type="time" name="time" id="time" />
+
+        <button type="submit" style="width: 100%;" onclick="scheduleReminder()">
+          Schedule Reminder
+        </button>
+        <!-- </form> -->
+
+        <table border="1">
+          <thead>
+            <tr>
+              <th>title</th>
+              <th>Description</th>
+              <th>Date & Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="reminderTableBody"></tbody>
+        </table>
+      </div>
+
+      <audio
+        src="/audio/chiptune-alarm-clock-112869.mp3"
+        id="notificationSound"
+      ></audio>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/slide.js"></script>
+    <script src="/js/lecturer.js"></script>
+  </body>
+</html>
