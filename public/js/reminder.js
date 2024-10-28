@@ -1,5 +1,6 @@
 // Request notification permission
 console.log("Testing alarm app");
+const API_BASE_URL = "https://imaginative-isobel-testalarmapp-b9675341.koyeb.app/api"
 
 if ("Notification" in window) {
   Notification.requestPermission().then((permission) => {
@@ -23,7 +24,7 @@ const saveReminderToDatabase = async (title, description, dateTimeString) => {
   };
 
   try {
-    const response = await fetch("http://localhost:4040/api/reminders", {
+    const response = await fetch(`${API_BASE_URL}/reminders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +47,7 @@ const saveReminderToDatabase = async (title, description, dateTimeString) => {
 // Function to load all reminders from the database and display them in the table
 const loadRemindersFromDatabase = async () => {
   try {
-    const response = await fetch("http://localhost:4040/api/reminders");
+    const response = await fetch(`${API_BASE_URL}/reminders`);
     if (response.ok) {
       const alarms = await response.json();
 
@@ -116,7 +117,7 @@ const clearFormFields = () => {
 // Function to delete reminders from the database and the frontend
 const deleteReminder = async (reminderId, row) => {
   try {
-    const response = await fetch(`http://localhost:4040/api/reminders/${reminderId}`, {
+    const response = await fetch(`${API_BASE_URL}/reminders/${reminderId}`, {
       method: 'DELETE',
     });
     if (response.ok) {
