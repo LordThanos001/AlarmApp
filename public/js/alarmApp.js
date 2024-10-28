@@ -73,5 +73,8 @@ const loadAlarmsFromDatabase = async () => {
   }
 };
 
-// Load alarms from the database when the page loads
-document.addEventListener("DOMContentLoaded", loadAlarmsFromDatabase);
+// Function to initialize alarms only after the button click
+const initializeAlarms = () => {
+  loadAlarmsFromDatabase();
+  document.getElementById("startAlarms").style.display = 'none'; // Hide button after click
+};
