@@ -43,6 +43,36 @@ const saveReminderToDatabase = async (title, description, dateTimeString) => {
   }
 };
 
+// Function to schedule notifications for future reminders
+const scheduleNotifications = (alarms) => {
+  const currentTime = new Date();
+  alarms.forEach((alarm) => {
+    const alarmTime = new Date(alarm.dateTime);
+    const timeDifference = alarmTime - currentTime;
+
+    if (timeDifference > 0) { // Only schedule if the reminder is in the future
+      let timeoutId = setTimeout(() => {
+        // Play notification sound
+        document.getElementById("notificationSound").play();
+
+        // Display the notification
+        new Notification(alarm.title, {
+          body: alarm.description,
+          requireInteraction: true,
+        });
+
+        // Automatically delete reminder 1 minute after notification
+        const row = document.querySelector(`[data-reminder-id="${alarm._id}"]`);
+        if (row) {
+          setTimeout(() => deleteReminder(alarm._id, row), 60000); // 1-minute delay
+        }
+      }, timeDifference);
+
+      timeoutMap[alarm._id] = timeoutId; // Map timeout ID to reminder ID for later reference
+    }
+  });
+};
+
 // Function to load all reminders from the database and display them in the table
 const loadRemindersFromDatabase = async () => {
   try {
