@@ -78,3 +78,8 @@ const initializeAlarms = () => {
   loadAlarmsFromDatabase();
   document.getElementById("startAlarms").style.display = 'none'; // Hide button after click
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  const startButton = document.getElementById("startAlarms");
+  startButton.style.display = 'block'; // Ensure button is visible when page loads
+});
