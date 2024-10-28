@@ -52,9 +52,6 @@ const scheduleNotifications = (alarms) => {
 
     if (timeDifference > 0) { // Only schedule if the reminder is in the future
       let timeoutId = setTimeout(() => {
-        // Play notification sound
-        document.getElementById("notificationSound").play();
-
         // Display the notification
         new Notification(alarm.title, {
           body: alarm.description,
