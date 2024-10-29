@@ -17,17 +17,18 @@ const currentTime = new Date();
 
 // Function to check and schedule notifications for upcoming alarms
 const scheduleNotifications = (alarms) => {
-  console.log("Scheduling notification for alarm:", alarm)
   alarms.forEach((alarm) => {
     const alarmTime = new Date(alarm.dateTime);
+    console.log("Scheduling notification for:", alarm.title, "| Alarm Time:", alarmTime, "| Current Time:", currentTime);
+    
     if (alarmTime > currentTime) {
       let timeDifference = alarmTime - currentTime;
+      console.log("Time difference for alarm:", timeDifference, "milliseconds");
 
       let timeoutId = setTimeout(() => {
-        // Play alarm sound
+        console.log("Triggering notification for:", alarm.title);
         document.getElementById("notificationSound").play();
 
-        // Trigger browser notification
         new Notification(alarm.title, {
           body: alarm.description,
           requireInteraction: true,
@@ -38,7 +39,6 @@ const scheduleNotifications = (alarms) => {
     }
   });
 };
-
 
 // Function to load alarms from the database and display them in the table
 const loadAlarmsFromDatabase = async () => {
