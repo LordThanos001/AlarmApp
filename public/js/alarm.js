@@ -19,15 +19,15 @@ const currentTime = new Date();
 const scheduleNotifications = (alarms) => {
   alarms.forEach((alarm) => {
     if (!alarm || !alarm.dateTime) {
-      console.error("Invalid alarm data:", alarm); // Add this error-checking for unexpected data
+      console.error("Invalid alarm data:", alarm);
       return;
     }
 
     const alarmTime = new Date(alarm.dateTime);
-    console.log("Scheduling notification for:", alarm.title, "| Alarm Time:", alarmTime, "| Current Time:", currentTime);
+    console.log("Scheduling notification for:", alarm.title, "| Alarm Time (UTC):", alarmTime.toISOString(), "| Current Time:", currentTime.toISOString());
     
     if (alarmTime > currentTime) {
-      let timeDifference = alarmTime - currentTime;
+      let timeDifference = alarmTime.getTime() - currentTime.getTime();
       console.log("Time difference for alarm:", timeDifference, "milliseconds");
 
       let timeoutId = setTimeout(() => {
@@ -44,7 +44,6 @@ const scheduleNotifications = (alarms) => {
     }
   });
 };
-
 
 // Function to load alarms from the database and display them in the table
 const loadAlarmsFromDatabase = async () => {
@@ -65,7 +64,7 @@ const loadAlarmsFromDatabase = async () => {
           details.innerHTML = `
             <td>${alarm.title}</td>
             <td>${alarm.description}</td>
-            <td>${alarm.dateTime}</td>
+            <td>${alarmTime.toISOString()}</td>
           `;
           ul.append(details);
         }
