@@ -24,15 +24,14 @@ const scheduleNotifications = (alarms) => {
     }
 
     const alarmTime = new Date(alarm.dateTime);
-    const currentTime = new Date();
-    let timeDifference = alarmTime - currentTime;
+    const oneHourAheadTime = alarmTime - 3600000; // Subtracting 1 hour (in milliseconds)
+    const timeDifference = oneHourAheadTime - currentTime;
 
-    console.log("Scheduling notification for:", alarm.title, "| Alarm Time:", alarmTime, "| Current Time:", currentTime);
-    console.log("Time difference for alarm:", timeDifference, "milliseconds");
+    console.log("Scheduling notification for:", alarm.title, "| Alarm Time:", alarmTime, "| Adjusted Alarm Time:", new Date(oneHourAheadTime), "| Current Time:", currentTime);
+    console.log("Time difference for adjusted alarm:", timeDifference, "milliseconds");
 
-    // Schedule the alarm if it's in the future
     if (timeDifference > 0) {
-      let timeoutId = setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         console.log("Triggering notification for:", alarm.title);
         document.getElementById("notificationSound").play();
 
@@ -60,7 +59,6 @@ const loadAlarmsFromDatabase = async () => {
 
       alarms.forEach((alarm) => {
         const alarmTime = new Date(alarm.dateTime);
-        const currentTime = new Date();
 
         if (alarmTime > currentTime) {
           const details = document.createElement("tr");
@@ -73,7 +71,7 @@ const loadAlarmsFromDatabase = async () => {
         }
       });
 
-      // Schedule alarms that are still in the future
+      // Schedule alarms that are still in the future, adjusted by -1 hour
       scheduleNotifications(alarms);
     } else {
       console.error("Failed to load alarms:", response.statusText);
@@ -83,16 +81,12 @@ const loadAlarmsFromDatabase = async () => {
   }
 };
 
-// Check for new alarms every minute to catch any missed notifications
-setInterval(loadAlarmsFromDatabase, 60000); // Every minute (60,000 ms)
-
 const initializeAlarms = () => {
-  loadAlarmsFromDatabase(); // Load and schedule alarms after user interaction
-  document.getElementById("startAlarms").style.display = 'none'; // Hide button after interaction
+  loadAlarmsFromDatabase();
+  document.getElementById("startAlarms").style.display = 'none';
 };
 
-// Load alarms from the database when the page loads
 document.addEventListener("DOMContentLoaded", () => {
   const startButton = document.getElementById("startAlarms");
-  startButton.style.display = 'block'; // Ensure button is visible when page loads
+  startButton.style.display = 'block';
 });
