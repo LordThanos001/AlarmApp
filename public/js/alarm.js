@@ -24,12 +24,14 @@ const scheduleNotifications = (alarms) => {
     }
 
     const alarmTime = new Date(alarm.dateTime);
-    console.log("Scheduling notification for:", alarm.title, "| Alarm Time (UTC):", alarmTime.toISOString(), "| Current Time:", currentTime.toISOString());
-    
-    if (alarmTime > currentTime) {
-      let timeDifference = alarmTime.getTime() - currentTime.getTime();
-      console.log("Time difference for alarm:", timeDifference, "milliseconds");
+    const currentTime = new Date();
+    let timeDifference = alarmTime - currentTime;
 
+    console.log("Scheduling notification for:", alarm.title, "| Alarm Time:", alarmTime, "| Current Time:", currentTime);
+    console.log("Time difference for alarm:", timeDifference, "milliseconds");
+
+    // Schedule the alarm if it's in the future
+    if (timeDifference > 0) {
       let timeoutId = setTimeout(() => {
         console.log("Triggering notification for:", alarm.title);
         document.getElementById("notificationSound").play();
@@ -58,13 +60,14 @@ const loadAlarmsFromDatabase = async () => {
 
       alarms.forEach((alarm) => {
         const alarmTime = new Date(alarm.dateTime);
+        const currentTime = new Date();
 
         if (alarmTime > currentTime) {
           const details = document.createElement("tr");
           details.innerHTML = `
             <td>${alarm.title}</td>
             <td>${alarm.description}</td>
-            <td>${alarmTime.toISOString()}</td>
+            <td>${alarm.dateTime}</td>
           `;
           ul.append(details);
         }
@@ -79,6 +82,9 @@ const loadAlarmsFromDatabase = async () => {
     console.error("Error loading alarms:", error);
   }
 };
+
+// Check for new alarms every minute to catch any missed notifications
+setInterval(loadAlarmsFromDatabase, 60000); // Every minute (60,000 ms)
 
 const initializeAlarms = () => {
   loadAlarmsFromDatabase(); // Load and schedule alarms after user interaction
