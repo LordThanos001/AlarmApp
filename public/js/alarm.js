@@ -17,6 +17,7 @@ const currentTime = new Date();
 
 // Function to check and schedule notifications for upcoming alarms
 const scheduleNotifications = (alarms) => {
+  console.log("Scheduling notification for alarm:", alarm)
   alarms.forEach((alarm) => {
     const alarmTime = new Date(alarm.dateTime);
     if (alarmTime > currentTime) {
