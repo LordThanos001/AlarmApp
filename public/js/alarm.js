@@ -38,10 +38,11 @@ const scheduleNotifications = (alarms) => {
   });
 };
 
+
 // Function to load alarms from the database and display them in the table
 const loadAlarmsFromDatabase = async () => {
   try {
-    const response = await fetch("https://suitable-cody-testalarmapp-77be67d2.koyeb.app/api/reminders");
+    const response = await fetch("https://chief-helge-alarmproject-bcf739b8.koyeb.app/api/reminders");
 
     if (response.ok) {
       const alarms = await response.json();
@@ -73,5 +74,13 @@ const loadAlarmsFromDatabase = async () => {
   }
 };
 
+const initializeAlarms = () => {
+  loadAlarmsFromDatabase(); // Load and schedule alarms after user interaction
+  document.getElementById("startAlarms").style.display = 'none'; // Hide button after interaction
+};
+
 // Load alarms from the database when the page loads
-document.addEventListener("DOMContentLoaded", loadAlarmsFromDatabase);
+document.addEventListener("DOMContentLoaded", () => {
+  const startButton = document.getElementById("startAlarms");
+  startButton.style.display = 'block'; // Ensure button is visible when page loads
+});
