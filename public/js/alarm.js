@@ -1,3 +1,4 @@
+console.log('updated!');
 // Ask user to allow notification access
 console.log('Loading alarm system...');
 
