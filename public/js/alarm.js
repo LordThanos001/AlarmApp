@@ -18,6 +18,11 @@ const currentTime = new Date();
 // Function to check and schedule notifications for upcoming alarms
 const scheduleNotifications = (alarms) => {
   alarms.forEach((alarm) => {
+    if (!alarm || !alarm.dateTime) {
+      console.error("Invalid alarm data:", alarm); // Add this error-checking for unexpected data
+      return;
+    }
+
     const alarmTime = new Date(alarm.dateTime);
     console.log("Scheduling notification for:", alarm.title, "| Alarm Time:", alarmTime, "| Current Time:", currentTime);
     
@@ -39,6 +44,7 @@ const scheduleNotifications = (alarms) => {
     }
   });
 };
+
 
 // Function to load alarms from the database and display them in the table
 const loadAlarmsFromDatabase = async () => {
